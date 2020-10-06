@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 10964,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "packagerPid": 15588,
+  "expoServerNgrokUrl": "https://xu-fys.anonymous.agrotransporte.exp.direct",
+  "packagerNgrokUrl": "https://packager.xu-fys.anonymous.agrotransporte.exp.direct",
+  "ngrokPid": 15324,
   "webpackServerPort": null
 }

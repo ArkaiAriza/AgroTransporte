@@ -10,6 +10,17 @@ import * as WebBrowser from 'expo-web-browser';
 import { Linking } from 'expo';
 import UserContext from '../contexts/UserContext';
 
+import Constants from 'expo-constants';
+const { manifest } = Constants;
+
+let api = ``;
+
+if (process.env.NODE_ENV === 'production') {
+  api = 'https://floating-mesa-30503.herokuapp.com';
+} else {
+  api = `http://${manifest.debuggerHost.split(':').shift()}.nip.io:5000`;
+}
+
 const HomeScreen = () => {
   const { user, logged, logIn, setLoading } = useContext(UserContext);
 
@@ -21,8 +32,10 @@ const HomeScreen = () => {
   const handleOAuthLogin = async () => {
     setLoading(true);
     let redirectUrl = await Linking.makeUrl();
-    let authUrl = `https://floating-mesa-30503.herokuapp.com/auth/google`;
+    let authUrl = `${api}/auth/google`;
 
+    console.log('redirectURL ' + redirectUrl);
+    console.log(api);
     Linking.addEventListener('url', handleRedirect);
 
     await WebBrowser.openAuthSessionAsync(authUrl, redirectUrl);
