@@ -6,34 +6,26 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  SafeAreaView,
 } from 'react-native';
-import { Divider, Surface, Avatar } from 'react-native-paper';
-
-const DATA = [
-  {
-    title: 'First Item',
-  },
-  {
-    title: 'Second Item',
-  },
-  {
-    title: 'Third Item',
-  },
-  {
-    title: 'Fourth item',
-  },
-];
+import { Surface, Avatar } from 'react-native-paper';
+import userContext from '../contexts/UserContext';
+import OrderContext from '../contexts/OrderContext';
+import UserContext from '../contexts/UserContext';
 
 const CreateOrderContent = ({ navigation }) => {
   const [product, setProduct] = useState('');
-  const [weight, setWeight] = useState('');
+  const [weight, setWeight] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [duration, setDuration] = useState(0);
+
   const [items, setItems] = useState([]);
+  const { temporaryOrder, postOrder } = useContext(OrderContext);
+  const { user } = useContext(UserContext);
 
   const renderItems = () => {
     return items.map((item, index) => {
       return (
-        <View style={styles.product} key={item.product + index}>
+        <View style={styles.productName} key={item.product + index}>
           <TouchableOpacity
             onPress={() =>
               setItems(items.filter((item, cindex) => cindex !== index))
@@ -64,8 +56,13 @@ const CreateOrderContent = ({ navigation }) => {
     });
   };
 
-  const handleContinue = () => {
-    navigation.push('CreateOrderContent');
+  const handleFinish = async () => {
+    await postOrder(
+      { ...temporaryOrder, products: items, price, duration },
+      user
+    );
+    navigation.pop(2);
+    //navigation.push('OrdersList');
   };
 
   const handleAdd = () => {
@@ -96,6 +93,7 @@ const CreateOrderContent = ({ navigation }) => {
             style={styles.weightInput}
             value={weight}
             onChange={(e) => setWeight(e.nativeEvent.text)}
+            keyboardType='numeric'
           />
           <Text style={styles.weightLabel}>Kg</Text>
         </View>
@@ -106,12 +104,37 @@ const CreateOrderContent = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.recentSection}>
-        <ScrollView contentContainerStyle={styles.recentList}>
+        <ScrollView
+          contentContainerStyle={styles.recentList}
+          persistentScrollbar
+        >
           {renderItems()}
         </ScrollView>
       </View>
+      <View style={styles.priceSection}>
+        <View style={styles.priceContainer}>
+          <Text style={styles.weightLabel}>Precio Max:</Text>
+          <TextInput
+            style={styles.weightInput}
+            value={price}
+            onChange={(e) => setPrice(e.nativeEvent.text)}
+            keyboardType='numeric'
+          />
+          <Text style={styles.weightLabel}>$</Text>
+        </View>
+        <View style={styles.priceContainer}>
+          <Text style={styles.weightLabel}>Duración:</Text>
+          <TextInput
+            style={styles.weightInput}
+            value={duration}
+            onChange={(e) => setDuration(e.nativeEvent.text)}
+            keyboardType='numeric'
+          />
+          <Text style={styles.weightLabel}>Dias</Text>
+        </View>
+      </View>
       <View style={styles.buttonSection}>
-        <TouchableOpacity style={styles.button} onPress={handleContinue}>
+        <TouchableOpacity style={styles.button} onPress={handleFinish}>
           <Text style={styles.buttonText}>Finalizar</Text>
         </TouchableOpacity>
       </View>
@@ -151,7 +174,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   weightContainer: {
-    paddingHorizontal: '5%',
     height: '30%',
     width: '50%',
     flexDirection: 'row',
@@ -175,6 +197,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: 'grey',
   },
+  weightText: { fontSize: 14, color: 'grey' },
   addButtonSection: { height: '30%', width: '100%', alignItems: 'center' },
   addButton: {
     height: '60%',
@@ -187,17 +210,16 @@ const styles = StyleSheet.create({
   recentSection: {
     flexDirection: 'column',
     paddingHorizontal: '5%',
-    height: '40%',
+    height: '35%',
     backgroundColor: 'white',
     justifyContent: 'space-between',
     flex: 1,
   },
   recentList: {
     width: '100%',
-
     backgroundColor: 'white',
   },
-  product: {
+  productName: {
     width: '100%',
     height: 80,
     flexDirection: 'row',
@@ -209,7 +231,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'black',
   },
-  weightText: { fontSize: 14, color: 'grey' },
+
+  priceSection: {
+    height: '15%',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  priceContainer: {
+    paddingHorizontal: '5%',
+    width: '70%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '50%',
+  },
   buttonSection: {
     backgroundColor: 'white',
     height: '20%',

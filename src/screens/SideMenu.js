@@ -33,15 +33,27 @@ const SideMenu = ({ navigation }) => {
           active={active === 'pagos'}
           onPress={() => setActive('pagos')}
         />
-        <Drawer.Item
-          style={styles.option}
-          label='CREAR PEDIDO'
-          active={active === 'crear'}
-          onPress={() => {
-            setActive('crear');
-            navigation.navigate('CreateOrder');
-          }}
-        />
+        {user.userType === 'agricultor' ? (
+          <Drawer.Item
+            style={styles.option}
+            label='CREAR PEDIDO'
+            active={active === 'crear'}
+            onPress={() => {
+              setActive('crear');
+              navigation.navigate('CreateOrder');
+            }}
+          />
+        ) : (
+          <Drawer.Item
+            style={styles.option}
+            label='BUSCAR PEDIDO'
+            active={active === 'buscar'}
+            onPress={() => {
+              setActive('buscar');
+              navigation.navigate('SearchOrder');
+            }}
+          />
+        )}
         <Drawer.Item
           style={styles.option}
           label='SOPORTE'

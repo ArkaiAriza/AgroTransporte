@@ -24,6 +24,7 @@ export const UserProvider = ({ children }) => {
           const { data } = await AgroTransporte.get(
             `/agroapi/current_user/${value}`
           );
+          console.log(data);
           setUser(data);
           setLogged(true);
         }

@@ -8,6 +8,9 @@ import { Appbar, Avatar } from 'react-native-paper';
 import LandingPage from './LandingPage';
 import CreateOrderPosition from './CreateOrderPosition';
 import CreateOrderContent from './CreateOrderContent';
+import OrdersList from './OrdersList';
+import OrderDetails from './OrderDetails';
+import SearchOrderPosition from './SearchOrdersPosition';
 
 const Stack = createStackNavigator();
 
@@ -63,6 +66,21 @@ export default AppMain = () => {
         name='CreateOrderContent'
         component={CreateOrderContent}
         options={{ headerTitle: 'Crear Pedido' }}
+      />
+      <Stack.Screen
+        name='OrdersList'
+        component={OrdersList}
+        options={{ headerTitle: 'Pedidos' }}
+      />
+      <Stack.Screen
+        name='OrderDetails'
+        component={OrderDetails}
+        options={{ headerTitle: 'Pedido' }}
+      />
+      <Stack.Screen
+        name='SearchOrder'
+        component={SearchOrderPosition}
+        options={{ headerTitle: 'Buscar Pedidos' }}
       />
     </Stack.Navigator>
   );

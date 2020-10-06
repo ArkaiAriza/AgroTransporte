@@ -7,31 +7,20 @@ import {
   TextInput,
 } from 'react-native';
 import { Divider, Surface, Avatar } from 'react-native-paper';
-
-const DATA = [
-  {
-    title: 'First Item',
-  },
-  {
-    title: 'Second Item',
-  },
-  {
-    title: 'Third Item',
-  },
-  {
-    title: 'Fourth item',
-  },
-];
+import OrderContext from '../contexts/OrderContext';
+import UserContext from '../contexts/UserContext';
 
 const CreateOrderPosition = ({ navigation }) => {
-  const [initPos, setInitPos] = useState('');
-  const [endPos, setEndPos] = useState('');
+  const [initLoc, setInitLoc] = useState('');
+  const [endLoc, setEndLoc] = useState('');
+  const { temporaryOrder, modifyTemporaryOrder } = useContext(OrderContext);
+  const { user } = useContext(UserContext);
 
   const renderItems = () => {
-    return DATA.map((item) => {
+    return user.recentLocations.map((item, index) => {
       return (
-        <View style={styles.recent} key={item.title}>
-          <Text style={styles.recentText}>{item.title}</Text>
+        <View style={styles.recent} key={item + index}>
+          <Text style={styles.recentText}>{item}</Text>
         </View>
       );
     });
@@ -39,6 +28,7 @@ const CreateOrderPosition = ({ navigation }) => {
 
   const handleContinue = () => {
     navigation.push('CreateOrderContent');
+    modifyTemporaryOrder({ initLoc, endLoc, products: {} });
   };
 
   return (
@@ -54,8 +44,8 @@ const CreateOrderPosition = ({ navigation }) => {
             />
             <TextInput
               style={styles.positionInput}
-              value={initPos}
-              onChange={(e) => setInitPos(e.nativeEvent.text)}
+              value={initLoc}
+              onChange={(e) => setInitLoc(e.nativeEvent.text)}
             />
           </View>
           <Divider />
@@ -68,8 +58,8 @@ const CreateOrderPosition = ({ navigation }) => {
             />
             <TextInput
               style={styles.positionInput}
-              value={endPos}
-              onChange={(e) => setEndPos(e.nativeEvent.text)}
+              value={endLoc}
+              onChange={(e) => setEndLoc(e.nativeEvent.text)}
             />
           </View>
         </Surface>
@@ -135,12 +125,13 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     height: '80%',
     flexDirection: 'column',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
   },
   recent: {
     width: '100%',
     height: '25%',
     paddingTop: '2%',
+    justifyContent: 'center',
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 1,
   },

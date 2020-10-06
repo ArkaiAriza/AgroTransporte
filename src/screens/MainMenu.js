@@ -18,7 +18,10 @@ const MainMenu = ({ navigation }) => {
         <Text style={styles.avatarEmail}>{user.email}</Text>
       </View>
       <View style={styles.optionsSection}>
-        <TouchableOpacity style={styles.optionTouch}>
+        <TouchableOpacity
+          style={styles.optionTouch}
+          onPress={() => navigation.push('OrdersList')}
+        >
           <Surface style={styles.option}>
             <Avatar.Icon
               style={styles.optionsIcon}
@@ -40,20 +43,37 @@ const MainMenu = ({ navigation }) => {
             <Text style={styles.optionText}>Pagos</Text>
           </Surface>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.optionTouch}
-          onPress={() => navigation.push('CreateOrder')}
-        >
-          <Surface style={styles.option}>
-            <Avatar.Icon
-              style={styles.optionsIcon}
-              size={60}
-              icon='tag'
-              color='white'
-            />
-            <Text style={styles.optionText}>Crear Pedido</Text>
-          </Surface>
-        </TouchableOpacity>
+        {user.userType === 'agricultor' ? (
+          <TouchableOpacity
+            style={styles.optionTouch}
+            onPress={() => navigation.push('CreateOrder')}
+          >
+            <Surface style={styles.option}>
+              <Avatar.Icon
+                style={styles.optionsIcon}
+                size={60}
+                icon='tag'
+                color='white'
+              />
+              <Text style={styles.optionText}>Crear Pedido</Text>
+            </Surface>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.optionTouch}
+            onPress={() => navigation.push('SearchOrder')}
+          >
+            <Surface style={styles.option}>
+              <Avatar.Icon
+                style={styles.optionsIcon}
+                size={60}
+                icon='tag'
+                color='white'
+              />
+              <Text style={styles.optionText}>Buscar Pedido</Text>
+            </Surface>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity style={styles.optionTouch}>
           <Surface style={styles.option}>
             <Avatar.Icon
