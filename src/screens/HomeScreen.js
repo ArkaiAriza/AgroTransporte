@@ -11,15 +11,17 @@ import { Linking } from 'expo';
 import UserContext from '../contexts/UserContext';
 
 import Constants from 'expo-constants';
+import { api } from '../apis/AgroTransporteApi';
 const { manifest } = Constants;
 
-let api = ``;
+/* let api = ``;
 
 if (process.env.NODE_ENV === 'production') {
   api = 'https://floating-mesa-30503.herokuapp.com';
 } else {
-  api = `http://${manifest.debuggerHost.split(':').shift()}.nip.io:5000`;
-}
+  //api = `http://${manifest.debuggerHost.split(':').shift()}.nip.io:5000`;
+  api = 'https://floating-mesa-30503.herokuapp.com';
+} */
 
 const HomeScreen = () => {
   const { user, logged, logIn, setLoading } = useContext(UserContext);

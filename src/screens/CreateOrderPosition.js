@@ -70,7 +70,9 @@ const CreateOrderPosition = ({ navigation }) => {
             RECIENTES
           </Text>
         </View>
-        <View style={styles.recentList}>{renderItems()}</View>
+        {user.recentLocations && (
+          <View style={styles.recentList}>{renderItems()}</View>
+        )}
       </View>
       <View style={styles.buttonSection}>
         <TouchableOpacity style={styles.button} onPress={handleContinue}>
