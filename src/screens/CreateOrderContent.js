@@ -60,7 +60,7 @@ const CreateOrderContent = ({ navigation }) => {
     await postOrder(
       { ...temporaryOrder, products: items, price, duration },
       user
-    );
+    ).catch((e) => console.log(e));
     navigation.pop(2);
     //navigation.push('OrdersList');
   };

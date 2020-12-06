@@ -20,7 +20,11 @@ const MainMenu = ({ navigation }) => {
       <View style={styles.optionsSection}>
         <TouchableOpacity
           style={styles.optionTouch}
-          onPress={() => navigation.push('OrdersList')}
+          onPress={() =>
+            user.userType === 'agricultor'
+              ? navigation.push('OrdersList')
+              : navigation.push('OrdersOfferedList')
+          }
         >
           <Surface style={styles.option}>
             <Avatar.Icon
@@ -32,7 +36,10 @@ const MainMenu = ({ navigation }) => {
             <Text style={styles.optionText}>Historial</Text>
           </Surface>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.optionTouch}>
+        <TouchableOpacity
+          style={styles.optionTouch}
+          onPress={() => navigation.push('Payments')}
+        >
           <Surface style={styles.option}>
             <Avatar.Icon
               style={styles.optionsIcon}
@@ -74,7 +81,10 @@ const MainMenu = ({ navigation }) => {
             </Surface>
           </TouchableOpacity>
         )}
-        <TouchableOpacity style={styles.optionTouch}>
+        <TouchableOpacity
+          style={styles.optionTouch}
+          onPress={() => navigation.push('Support')}
+        >
           <Surface style={styles.option}>
             <Avatar.Icon
               style={styles.optionsIcon}

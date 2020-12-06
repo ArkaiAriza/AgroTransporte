@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, StyleSheet, ScrollView, TextInput } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  Linking,
+} from 'react-native';
 import { Divider, Surface, Avatar } from 'react-native-paper';
 import OrderContext from '../contexts/OrderContext';
 import UserContext from '../contexts/UserContext';
@@ -50,6 +57,14 @@ const OrderDetails = ({ navigation }) => {
     });
   };
 
+  const handleChat = () => {
+    Linking.openURL(
+      `http://api.whatsapp.com/send?phone=57${
+        userFromOrder.number
+      }&text=${'Enviado a traves de AgroTransporte'}`
+    );
+  };
+
   return (
     <View
       style={{
@@ -98,13 +113,25 @@ const OrderDetails = ({ navigation }) => {
           </ScrollView>
         </View>
         <Divider />
-        <View style={styles.totalWeightSection}>
-          <Text style={styles.totalWeightText}>
-            Peso Total: {selectedOrder.weight} Kg
-          </Text>
-          <Text style={styles.totalWeightText}>
-            Mejor Oferta: {selectedOrder.currentBid} $
-          </Text>
+        <View style={[styles.totalWeightSection, { flexDirection: 'row' }]}>
+          <View>
+            <Text style={styles.totalWeightText}>
+              Peso Total: {selectedOrder.weight} Kg
+            </Text>
+            <Text style={styles.totalWeightText}>
+              Mejor Oferta: {selectedOrder.currentBid} $
+            </Text>
+          </View>
+          <TouchableOpacity style={styles.optionTouch} onPress={handleChat}>
+            <Surface>
+              <Avatar.Icon
+                style={{ backgroundColor: 'blue' }}
+                size={60}
+                icon='chat'
+                color='white'
+              />
+            </Surface>
+          </TouchableOpacity>
         </View>
         <Divider />
         <View style={styles.conductorSection}>
@@ -195,7 +222,9 @@ const styles = StyleSheet.create({
   totalWeightSection: {
     backgroundColor: 'white',
     height: 100,
-    justifyContent: 'space-evenly',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: '10%',
   },
 

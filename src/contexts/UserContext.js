@@ -65,6 +65,13 @@ export const UserProvider = ({ children }) => {
     setUser({ ...user, userType: type });
   };
 
+  const setUserNumber = async (number) => {
+    const res = await AgroTransporte.put(`/agroapi/user_number/${user._id}`, {
+      number: number,
+    });
+    setUser({ ...user, number: number });
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -76,6 +83,7 @@ export const UserProvider = ({ children }) => {
         setUserType,
         loading,
         setLoading,
+        setUserNumber,
       }}
     >
       {children}

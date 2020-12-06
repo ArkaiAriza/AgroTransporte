@@ -66,6 +66,14 @@ export const OrderProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const getOrdersOfferedList = async (user) => {
+    const { data } = await AgroTransporte.get(
+      `/agroapi/orders_transportador/${user._id}`
+    );
+    setOrdersList(data);
+    setLoading(false);
+  };
+
   const searchOrders = async (initLoc, endLoc, user) => {
     const search = {
       initLoc,
@@ -109,6 +117,7 @@ export const OrderProvider = ({ children }) => {
         modifyTemporaryOrder,
         postOrder,
         getOrdersList,
+        getOrdersOfferedList,
         searchOrders,
         searchOrdersList,
         userFromOrder,

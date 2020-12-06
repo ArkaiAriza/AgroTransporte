@@ -1,16 +1,21 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
 import { Appbar, Avatar } from 'react-native-paper';
+import { TransitionPresets } from '@react-navigation/stack';
 
 import LandingPage from './LandingPage';
 import CreateOrderPosition from './CreateOrderPosition';
 import CreateOrderContent from './CreateOrderContent';
 import OrdersList from './OrdersList';
+import OrdersOfferedList from './OrdersOffered';
 import OrderDetails from './OrderDetails';
 import SearchOrderPosition from './SearchOrdersPosition';
+import Support from './Support';
+import FAQ from './FAQ';
+import Contact from './Contact';
+import PaymentOptions from './PaymentOptions';
 
 const Stack = createStackNavigator();
 
@@ -24,7 +29,12 @@ const Header = ({ scene, previous, navigation }) => {
       : scene.route.name;
 
   return (
-    <Appbar.Header style={styles.header}>
+    <Appbar.Header
+      style={[
+        styles.header,
+        options.color ? { backgroundColor: options.color } : {},
+      ]}
+    >
       {previous ? (
         <Appbar.BackAction onPress={() => navigation.pop()} />
       ) : (
@@ -73,6 +83,11 @@ export default AppMain = () => {
         options={{ headerTitle: 'Pedidos' }}
       />
       <Stack.Screen
+        name='OrdersOfferedList'
+        component={OrdersOfferedList}
+        options={{ headerTitle: 'Pedidos Ofertados' }}
+      />
+      <Stack.Screen
         name='OrderDetails'
         component={OrderDetails}
         options={{ headerTitle: 'Pedido' }}
@@ -81,6 +96,37 @@ export default AppMain = () => {
         name='SearchOrder'
         component={SearchOrderPosition}
         options={{ headerTitle: 'Buscar Pedidos' }}
+      />
+      <Stack.Screen
+        name='Support'
+        component={Support}
+        options={{
+          headerTitle: 'Soporte',
+          color: '#1152fdee',
+        }}
+      />
+      <Stack.Screen
+        name='FAQ'
+        component={FAQ}
+        options={{
+          headerTitle: 'FAQ',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name='Contact'
+        component={Contact}
+        options={{
+          headerTitle: 'Contacto',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name='Payments'
+        component={PaymentOptions}
+        options={{
+          headerTitle: 'Pagos',
+        }}
       />
     </Stack.Navigator>
   );
