@@ -18,22 +18,6 @@ export const OrderProvider = ({ children }) => {
   const [searchOrdersList, setSearchOrdersList] = useState([]);
   const [userFromOrder, setUserFromOrder] = useState([]);
 
-  /* useEffect(() => {
-    setLoading(true);
-    const getOrdersList = async () => {
-        const {data} = await AgroTransporte.get('/agroapi/orders_agricultor');
-        if (value !== null) {
-          const { data } = await AgroTransporte.get(
-            `/agroapi/current_user/${value}`
-          );
-          setUser(data);
-          setLogged(true);
-        }
-        setLoading(false);
-    };
-    getUserFromStorage();
-  }, []);  */
-
   const modifyTemporaryOrder = (order) => {
     setTemporaryOrder(order);
   };
@@ -56,6 +40,11 @@ export const OrderProvider = ({ children }) => {
       `/agroapi/create_order/${user._id}`,
       finalOrder
     );
+  };
+
+  const selectOrder = async (id) => {
+    const { data } = await AgroTransporte.get(`/agroapi/orders_details/${id}`);
+    setSelectedOrder(data.order);
   };
 
   const getOrdersList = async (user) => {
@@ -123,6 +112,7 @@ export const OrderProvider = ({ children }) => {
         userFromOrder,
         getUserFromOrder,
         makeOffer,
+        selectOrder,
       }}
     >
       {children}

@@ -16,6 +16,8 @@ import Support from './Support';
 import FAQ from './FAQ';
 import Contact from './Contact';
 import PaymentOptions from './PaymentOptions';
+import PayOrdersList from './PayOrdersList';
+import PayOrder from './PayOrder';
 
 const Stack = createStackNavigator();
 
@@ -122,10 +124,24 @@ export default AppMain = () => {
         }}
       />
       <Stack.Screen
+        name='PayOrdersList'
+        component={PayOrdersList}
+        options={{
+          headerTitle: 'Pedidos de Pago',
+        }}
+      />
+      <Stack.Screen
         name='Payments'
         component={PaymentOptions}
         options={{
           headerTitle: 'Pagos',
+        }}
+      />
+      <Stack.Screen
+        name='PayOrder'
+        component={PayOrder}
+        options={{
+          headerTitle: 'Pagar Orden',
         }}
       />
     </Stack.Navigator>

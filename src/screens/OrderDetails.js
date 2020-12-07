@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import {
   Text,
   View,
@@ -11,26 +11,35 @@ import { Divider, Surface, Avatar } from 'react-native-paper';
 import OrderContext from '../contexts/OrderContext';
 import UserContext from '../contexts/UserContext';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useFocusEffect } from '@react-navigation/native';
 
-const OrderDetails = ({ navigation }) => {
+const OrderDetails = ({ navigation, route }) => {
   const [offer, setOffer] = useState(null);
   const {
     selectedOrder,
     getUserFromOrder,
     userFromOrder,
     makeOffer,
+    selectOrder,
   } = useContext(OrderContext);
+
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    if (user.userType === 'agricultor') {
+    if (user.userType === 'agricultor' && selectedOrder.offeringUsersID) {
       getUserFromOrder(
         selectedOrder.offeringUsersID[selectedOrder.offeringUsersID.length - 1]
       );
     } else {
       getUserFromOrder(selectedOrder.userID);
     }
-  }, []);
+  }, [selectedOrder]);
+
+  useFocusEffect(
+    useCallback(() => {
+      selectOrder(route.params.orderId);
+    }, [])
+  );
 
   const handleOffer = () => {
     makeOffer(offer, user);
@@ -38,9 +47,11 @@ const OrderDetails = ({ navigation }) => {
   };
 
   const renderItems = () => {
+    console.log('asdasd');
     return selectedOrder.products.map((item, index) => {
       return (
         <View
+          key={index}
           style={{
             borderBottomColor: 'lightgrey',
             borderBottomWidth: 1,
@@ -109,7 +120,7 @@ const OrderDetails = ({ navigation }) => {
             persistentScrollbar
             nestedScrollEnabled
           >
-            {renderItems()}
+            {selectedOrder.products && renderItems()}
           </ScrollView>
         </View>
         <Divider />
@@ -166,6 +177,32 @@ const OrderDetails = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         )}
+        {route.params.payment ? (
+          selectedOrder.bill === 'None' ? (
+            <View style={{ marginVertical: 10, alignItems: 'center' }}>
+              <TouchableOpacity
+                style={styles.bidButton}
+                onPress={() =>
+                  navigation.push('PayOrder', {
+                    orderId: selectedOrder._id,
+                  })
+                }
+              >
+                <Text style={styles.bidButtonText}>Pagar</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View
+              style={{
+                marginVertical: 10,
+                alignItems: 'center',
+                backgroundColor: 'green',
+              }}
+            >
+              <Text style={styles.bidButtonText}>Pedido Pagado</Text>
+            </View>
+          )
+        ) : null}
       </ScrollView>
     </View>
   );

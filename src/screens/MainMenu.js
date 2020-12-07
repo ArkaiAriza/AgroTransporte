@@ -38,7 +38,7 @@ const MainMenu = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.optionTouch}
-          onPress={() => navigation.push('Payments')}
+          onPress={() => navigation.push('PayOrdersList')}
         >
           <Surface style={styles.option}>
             <Avatar.Icon

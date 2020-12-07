@@ -13,8 +13,9 @@ import { PaymentsStripe as Stripe } from 'expo-payments-stripe';
 import OrderContext from '../contexts/OrderContext';
 import UserContext from '../contexts/UserContext';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import OrderDetails from './OrderDetails';
 
-const PaymentOptions = ({ navigation }) => {
+const PayOrder = ({ navigation, route }) => {
   const [params, setParams] = useState({
     number: '',
     expMonth: 0,
@@ -54,11 +55,17 @@ const PaymentOptions = ({ navigation }) => {
   }, [errors]);
 
   const onPaymentSuccess = async (token) => {
-    const res = await AgroTransporte.post(`/agroapi/stripe_charge`, {
-      token: token,
-      amount: params.amount,
-    });
+    const res = await AgroTransporte.post(
+      `/agroapi/stripe_charge/${route.params.orderId}`,
+      {
+        token: token,
+        amount: Number(params.amount + '00'),
+      }
+    );
     console.log(res.data);
+    if (res.data.bill !== 'None') {
+      navigation.pop();
+    }
   };
 
   const checkErrors = () => {
@@ -200,4 +207,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PaymentOptions;
+export default PayOrder;

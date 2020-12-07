@@ -36,7 +36,7 @@ const SearchOrdersPosition = ({ navigation }) => {
           }}
           onPress={() => {
             setSelectedOrder(item);
-            navigation.push('OrderDetails');
+            navigation.push('OrderDetails', { orderId: item._id });
           }}
         >
           <View style={styles.card}>

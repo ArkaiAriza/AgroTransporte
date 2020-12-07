@@ -7,24 +7,38 @@ import {
   ScrollView,
 } from 'react-native';
 import { Avatar, Divider } from 'react-native-paper';
-import userContext from '../contexts/UserContext';
 import OrderContext from '../contexts/OrderContext';
 import UserContext from '../contexts/UserContext';
 
-const OrdersList = ({ navigation }) => {
+const PayOrdersList = ({ navigation }) => {
   const [product, setProduct] = useState('');
 
   const { user } = useContext(UserContext);
-  const { ordersList, getOrdersList, setSelectedOrder } = useContext(
-    OrderContext
-  );
+  const {
+    ordersList,
+    getOrdersList,
+    setSelectedOrder,
+    getOrdersOfferedList,
+  } = useContext(OrderContext);
 
   useEffect(() => {
-    getOrdersList(user);
+    if (user.userType === 'agricultor') {
+      getOrdersList(user);
+    } else {
+      getOrdersOfferedList(user);
+    }
   }, []);
 
   const renderItems = () => {
     return ordersList.map((item, index) => {
+      console.log(item);
+      if (!item.expired) return;
+      if (
+        user.userType === 'transportador' &&
+        item.offeringUsersID[item.offeringUsersID.length - 1] !== user._id
+      )
+        return;
+
       return (
         <TouchableOpacity
           style={{
@@ -37,9 +51,15 @@ const OrdersList = ({ navigation }) => {
             backgroundColor: 'white',
           }}
           onPress={() => {
-            setSelectedOrder(item);
-            navigation.push('OrderDetails', { orderId: item._id });
+            //setSelectedOrder(item);
+            navigation.push(
+              'OrderDetails',
+              user.userType === 'agricultor'
+                ? { payment: true, orderId: item._id }
+                : {}
+            );
           }}
+          key={item._id}
         >
           <View style={styles.card}>
             <View style={styles.topCardContent}>
@@ -48,12 +68,12 @@ const OrdersList = ({ navigation }) => {
               </Text>
               <Text style={styles.timeLeft}>{item.daysToExpire} days</Text>
               <Text
-                style={
-                  ({ ...styles.progress },
-                  item.expired ? { color: 'red' } : { color: 'blue' })
-                }
+                style={[
+                  { ...styles.progress },
+                  item.bill === 'None' ? { color: 'red' } : { color: 'green' },
+                ]}
               >
-                {item.expired ? 'TERMINADO' : 'EN PROGRESO'}
+                {item.bill === 'None' ? 'NO PAGADO' : 'PAGADO'}
               </Text>
             </View>
             <Divider />
@@ -96,7 +116,7 @@ const OrdersList = ({ navigation }) => {
       user
     );
     navigation.pop(2);
-    //navigation.push('OrdersList');
+    //navigation.push('PayOrdersList');
   };
 
   const handleAdd = () => {
@@ -178,4 +198,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrdersList;
+export default PayOrdersList;
