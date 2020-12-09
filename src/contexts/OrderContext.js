@@ -95,6 +95,13 @@ export const OrderProvider = ({ children }) => {
     console.log(data);
   };
 
+  const deleteOrder = async (orderId) => {
+    const { data } = await AgroTransporte.delete(
+      `/agroapi/delete_order/${orderId}`
+    );
+    console.log(data);
+  };
+
   return (
     <OrderContext.Provider
       value={{
@@ -113,6 +120,7 @@ export const OrderProvider = ({ children }) => {
         getUserFromOrder,
         makeOffer,
         selectOrder,
+        deleteOrder,
       }}
     >
       {children}

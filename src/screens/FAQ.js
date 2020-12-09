@@ -4,79 +4,121 @@ import { Divider, Surface, Avatar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import OrderContext from '../contexts/OrderContext';
 import UserContext from '../contexts/UserContext';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
 const FAQ = ({ navigation }) => {
-  const { user } = useContext(UserContext);
+  const faq = [
+    {
+      section: 'Cuenta',
+      questions: [
+        {
+          q: 'Desbloquear cuenta',
+          text:
+            'dhfjabdshjbfhbdasflkjhadsfkjhkjahsdfkjhkjahsd asfdsg sd fg sd fg s dfg  sdg  sdg asdfasdfasdf .as f.a.sf asfsdfasdfafdfa.sdf asdf a sf a sf  as f as df a s df  daf daasfda df f as df a dfs \n jhgjgadshdsagd fds  sdf s  fdsfsdf  sdfs dfsdf sdf sdfs df s sdf sd f',
+        },
+        {
+          q: 'Cambiar el número de telefono',
+          text: 'dhfjabdshjbfhbdasflkjhadsfkjhkjahsdfkjhkjahsd',
+        },
+        {
+          q: 'Información de privacidad',
+          text: 'dhfjabdshjbfhbdasflkjhadsfkjhkjahsdfkjhkjahsd',
+        },
+      ],
+    },
+    {
+      section: 'Pagos y precios',
+      questions: [
+        {
+          q: 'Métodos de pago aceptados',
+          text: 'dhfjabdshjbfhbdasflkjhadsfkjhkjahsdfkjhkjahsd',
+        },
+        {
+          q: 'Estimación del precio',
+          text: 'dhfjabdshjbfhbdasflkjhadsfkjhkjahsdfkjhkjahsd',
+        },
+        {
+          q: 'Cuota de cancelación del viaje',
+          text: 'dhfjabdshjbfhbdasflkjhadsfkjhkjahsdfkjhkjahsd',
+        },
+        {
+          q: 'Cargo por daños o limpieza',
+          text: 'dhfjabdshjbfhbdasflkjhadsfkjhkjahsdfkjhkjahsd',
+        },
+        {
+          q: 'Precio más alto de lo esperado',
+          text: 'dhfjabdshjbfhbdasflkjhadsfkjhkjahsdfkjhkjahsd',
+        },
+      ],
+    },
+  ];
 
-  const renderItems = () => {};
+  const renderSections = () => {
+    return faq.map((item) => {
+      return (
+        <View key={item.section} style={styles.sectionContainer}>
+          <Text style={styles.sectionText}>{item.section}</Text>
+          {renderQuestions(item.questions)}
+        </View>
+      );
+    });
+  };
+
+  const renderQuestions = (questions) => {
+    return questions.map((item) => {
+      return (
+        <TouchableOpacity
+          key={item.q}
+          style={styles.questionContainer}
+          onPress={() => navigation.push('FAQQuestion', { question: item })}
+        >
+          <Text style={styles.questionTitle}>{item.q}</Text>
+          <Icon
+            style={{ backgroundColor: 'white' }}
+            size={30}
+            name='chevron-right'
+            color='lightgrey'
+          />
+        </TouchableOpacity>
+      );
+    });
+  };
 
   return (
-    <View
+    <ScrollView
       style={{
         height: '100%',
         backgroundColor: 'white',
-        alignItems: 'center',
+        width: '100%',
         flex: 1,
       }}
+      contentContainerStyle={{ alignItems: 'flex-start', paddingLeft: 50 }}
     >
-      <View style={styles.blueSection} />
-      <View style={styles.content}>
-        <View style={styles.option}>
-          <Text style={styles.optionsText}>Preguntas Frecuentes</Text>
-          <Icon
-            style={{ backgroundColor: 'white' }}
-            size={40}
-            name='chevron-right'
-            color='lightgrey'
-          />
-        </View>
-        <View style={styles.separator} />
-        <View style={styles.option}>
-          <Text style={styles.optionsText}>Contáctanos</Text>
-          <Icon
-            style={{ backgroundColor: 'white' }}
-            size={40}
-            name='chevron-right'
-            color='lightgrey'
-          />
-        </View>
-      </View>
-      <View styles={styles.whiteSection} />
-    </View>
+      {renderSections()}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  blueSection: {
-    backgroundColor: '#1152fdee',
-    width: '100%',
-    height: '40%',
+  sectionContainer: { width: '100%' },
+  sectionText: {
+    marginVertical: 30,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'grey',
   },
-  content: {
-    top: '-10%',
-    height: '30%',
-    width: '90%',
-    paddingHorizontal: '5%',
-    elevation: 5,
-    backgroundColor: 'white',
-    borderRadius: 20,
-  },
-  option: {
-    height: '50%',
-    width: '100%',
-    backgroundColor: 'white',
+  questionContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#0000',
+    width: '90%',
+    height: 50,
+    marginVertical: 10,
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 1,
   },
-  optionsText: { fontSize: 24, color: 'grey', fontWeight: 'bold' },
-  separator: { height: 1, borderBottomWidth: 1, borderColor: 'lightgrey' },
-  whiteSection: {
-    backgroundColor: 'white',
-    height: '60%',
-    width: '100%',
+  questionTitle: {
+    fontSize: 14,
+    color: 'grey',
   },
 });
 

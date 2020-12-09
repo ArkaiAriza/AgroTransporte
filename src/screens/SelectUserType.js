@@ -7,7 +7,6 @@ const SelectUserType = () => {
   const { user, setUserType } = useContext(UserContext);
 
   const handleTouch = (type) => {
-    console.log(type);
     setUserType(type);
   };
 

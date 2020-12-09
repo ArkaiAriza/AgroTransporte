@@ -13,8 +13,6 @@ const NumberRequestScreen = () => {
   const [number, setNumber] = useState('');
 
   const handleSubmit = () => {
-    console.log('number', number);
-
     setUserNumber(number);
   };
 
@@ -34,7 +32,6 @@ const NumberRequestScreen = () => {
         value={number}
         onChange={(e) => {
           setNumber(e.nativeEvent.text);
-          console.log(number);
         }}
       />
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>

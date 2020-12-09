@@ -28,6 +28,7 @@ const OrdersOffered = ({ navigation }) => {
     return ordersList.map((item, index) => {
       return (
         <TouchableOpacity
+          key={item._id}
           style={{
             width: '90%',
             marginVertical: '5%',
@@ -38,8 +39,10 @@ const OrdersOffered = ({ navigation }) => {
             backgroundColor: 'white',
           }}
           onPress={() => {
-            setSelectedOrder(item);
-            navigation.push('OrderDetails');
+            navigation.push('OrderDetails', {
+              orderId: item._id,
+              payment: false,
+            });
           }}
         >
           <View style={styles.card}>

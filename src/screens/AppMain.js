@@ -14,10 +14,12 @@ import OrderDetails from './OrderDetails';
 import SearchOrderPosition from './SearchOrdersPosition';
 import Support from './Support';
 import FAQ from './FAQ';
+import FAQQuestion from './FAQQuestion';
 import Contact from './Contact';
 import PaymentOptions from './PaymentOptions';
 import PayOrdersList from './PayOrdersList';
 import PayOrder from './PayOrder';
+import CancelOrder from './CancelOrder';
 
 const Stack = createStackNavigator();
 
@@ -116,6 +118,14 @@ export default AppMain = () => {
         }}
       />
       <Stack.Screen
+        name='FAQQuestion'
+        component={FAQQuestion}
+        options={{
+          headerTitle: 'FAQ',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
         name='Contact'
         component={Contact}
         options={{
@@ -142,6 +152,13 @@ export default AppMain = () => {
         component={PayOrder}
         options={{
           headerTitle: 'Pagar Orden',
+        }}
+      />
+      <Stack.Screen
+        name='CancelOrder'
+        component={CancelOrder}
+        options={{
+          headerTitle: 'Cancelar Orden',
         }}
       />
     </Stack.Navigator>

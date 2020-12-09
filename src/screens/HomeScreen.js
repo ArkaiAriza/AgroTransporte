@@ -31,16 +31,30 @@ const HomeScreen = () => {
     logIn(data.queryParams);
   };
 
+  const toQueryString = (params) => {
+    return (
+      '?' +
+      Object.entries(params)
+        .map(
+          ([key, value]) =>
+            `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+        )
+        .join('&')
+    );
+  };
+
   const handleOAuthLogin = async () => {
     setLoading(true);
     let redirectUrl = await Linking.makeUrl();
     let authUrl = `${api}/auth/google`;
 
-    console.log('redirectURL ' + redirectUrl);
-    console.log(api);
+    //console.log(authUrl);
+
+    //console.log('redirectURL ' + redirectUrl);
+    //console.log(api);
     Linking.addEventListener('url', handleRedirect);
 
-    await WebBrowser.openAuthSessionAsync(authUrl, redirectUrl);
+    await WebBrowser.openAuthSessionAsync(authUrl);
     Linking.removeEventListener('url', handleRedirect);
   };
 

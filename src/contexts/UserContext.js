@@ -24,7 +24,6 @@ export const UserProvider = ({ children }) => {
           const { data } = await AgroTransporte.get(
             `/agroapi/current_user/${value}`
           );
-          console.log(data);
           setUser(data);
           setLogged(true);
         }
@@ -48,7 +47,6 @@ export const UserProvider = ({ children }) => {
   };
 
   const logOut = async () => {
-    console.log('logOut');
     setUser({});
     setLogged(false);
     try {

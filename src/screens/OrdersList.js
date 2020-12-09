@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import {
   Text,
   View,
@@ -10,6 +10,7 @@ import { Avatar, Divider } from 'react-native-paper';
 import userContext from '../contexts/UserContext';
 import OrderContext from '../contexts/OrderContext';
 import UserContext from '../contexts/UserContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 const OrdersList = ({ navigation }) => {
   const [product, setProduct] = useState('');
@@ -19,14 +20,21 @@ const OrdersList = ({ navigation }) => {
     OrderContext
   );
 
-  useEffect(() => {
-    getOrdersList(user);
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      if (user.userType === 'agricultor') {
+        getOrdersList(user);
+      } else {
+        getOrdersOfferedList(user);
+      }
+    }, [])
+  );
 
   const renderItems = () => {
     return ordersList.map((item, index) => {
       return (
         <TouchableOpacity
+          key={item._id}
           style={{
             width: '90%',
             marginVertical: '5%',

@@ -25,13 +25,21 @@ const SideMenu = ({ navigation }) => {
           style={styles.option}
           label='HISTORIAL'
           active={active === 'historial'}
-          onPress={() => setActive('historial')}
+          onPress={() => {
+            setActive('historial');
+            user.userType === 'agricultor'
+              ? navigation.push('OrdersList')
+              : navigation.push('OrdersOfferedList');
+          }}
         />
         <Drawer.Item
           style={styles.option}
           label='PAGOS'
           active={active === 'pagos'}
-          onPress={() => setActive('pagos')}
+          onPress={() => {
+            setActive('pagos');
+            navigation.navigate('PayOrdersList');
+          }}
         />
         {user.userType === 'agricultor' ? (
           <Drawer.Item
@@ -58,7 +66,10 @@ const SideMenu = ({ navigation }) => {
           style={styles.option}
           label='SOPORTE'
           active={active === 'soporte'}
-          onPress={() => setActive('soporte')}
+          onPress={() => {
+            setActive('soporte');
+            navigation.navigate('Support');
+          }}
         />
         <View style={{ flexBasis: '20%' }} />
         <TouchableOpacity

@@ -10,7 +10,6 @@ import UserContext from '../contexts/UserContext';
 
 export default Home = () => {
   const { user, logged, loading } = useContext(UserContext);
-  useEffect(() => console.log(user, loading), [user, loading]);
 
   return loading ? null : !logged ? (
     <HomeScreen />

@@ -36,14 +36,11 @@ const PayOrder = ({ navigation, route }) => {
     console.log('errors', errors);
     if (!errors && params.number) {
       let temp = { ...params };
-      console.log(params);
 
       temp.expMonth = parseInt(params.expMonth);
       temp.expYear = parseInt(params.expYear);
-      console.log(temp);
 
       const token = await Stripe.createTokenWithCardAsync(temp);
-      console.log(token);
       onPaymentSuccess(token);
     } else {
       console.log('errors', errors);
@@ -62,7 +59,6 @@ const PayOrder = ({ navigation, route }) => {
         amount: Number(params.amount + '00'),
       }
     );
-    console.log(res.data);
     if (res.data.bill !== 'None') {
       navigation.pop();
     }
@@ -103,10 +99,11 @@ const PayOrder = ({ navigation, route }) => {
             styles.weightInput,
             errors && errors[target] ? { borderColor: 'red' } : {},
           ]}
-          value={params[target]}
+          value={target === 'amount' ? route.params.price + '' : params[target]}
           onChange={(e) => handleChange(target, e.nativeEvent.text)}
           keyboardType='numeric'
           maxLength={maxLenght}
+          editable={target === 'amount' ? false : true}
         />
         {errors && errors[target] && (
           <Text style={{ color: 'red' }}>{errors[target]}</Text>

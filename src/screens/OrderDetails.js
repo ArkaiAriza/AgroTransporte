@@ -47,7 +47,6 @@ const OrderDetails = ({ navigation, route }) => {
   };
 
   const renderItems = () => {
-    console.log('asdasd');
     return selectedOrder.products.map((item, index) => {
       return (
         <View
@@ -185,6 +184,7 @@ const OrderDetails = ({ navigation, route }) => {
                 onPress={() =>
                   navigation.push('PayOrder', {
                     orderId: selectedOrder._id,
+                    price: selectedOrder.currentBid,
                   })
                 }
               >
@@ -203,6 +203,22 @@ const OrderDetails = ({ navigation, route }) => {
             </View>
           )
         ) : null}
+        {selectedOrder.bill === 'None' &&
+          selectedOrder.finished === true &&
+          user.userType === 'agricultor' && (
+            <View style={{ marginVertical: 10, alignItems: 'center' }}>
+              <TouchableOpacity
+                style={[styles.bidButton, { backgroundColor: 'grey' }]}
+                onPress={() =>
+                  navigation.push('CancelOrder', {
+                    orderId: selectedOrder._id,
+                  })
+                }
+              >
+                <Text style={styles.bidButtonText}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
+          )}
       </ScrollView>
     </View>
   );

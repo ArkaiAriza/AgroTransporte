@@ -32,17 +32,13 @@ const PaymentOptions = ({ navigation }) => {
   }, []);
 
   const doPayment = async () => {
-    console.log('errors', errors);
     if (!errors && params.number) {
       let temp = { ...params };
-      console.log(params);
 
       temp.expMonth = parseInt(params.expMonth);
       temp.expYear = parseInt(params.expYear);
-      console.log(temp);
 
       const token = await Stripe.createTokenWithCardAsync(temp);
-      console.log(token);
       onPaymentSuccess(token);
     } else {
       console.log('errors', errors);
@@ -58,7 +54,6 @@ const PaymentOptions = ({ navigation }) => {
       token: token,
       amount: params.amount,
     });
-    console.log(res.data);
   };
 
   const checkErrors = () => {

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import {
   Text,
   View,
@@ -10,6 +10,7 @@ import {
 import { Surface, Avatar, Divider } from 'react-native-paper';
 import OrderContext from '../contexts/OrderContext';
 import UserContext from '../contexts/UserContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 const SearchOrdersPosition = ({ navigation }) => {
   const [initLoc, setInitLoc] = useState('Bogota');
@@ -20,11 +21,17 @@ const SearchOrdersPosition = ({ navigation }) => {
     OrderContext
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => searchOrders('Bogota', 'Bogota', user);
+    }, [])
+  );
+
   const renderItems = () => {
-    console.log(searchOrdersList);
     return searchOrdersList.map((item, index) => {
       return (
         <TouchableOpacity
+          key={item._id}
           style={{
             width: '90%',
             marginVertical: '5%',

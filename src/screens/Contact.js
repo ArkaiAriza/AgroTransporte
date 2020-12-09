@@ -1,82 +1,76 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TextInput } from 'react-native';
 import { Divider, Surface, Avatar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import OrderContext from '../contexts/OrderContext';
 import UserContext from '../contexts/UserContext';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
-const Contact = ({ navigation }) => {
-  const { user } = useContext(UserContext);
-
-  const renderItems = () => {};
-
+const Contact = ({ navigation, route }) => {
   return (
-    <View
+    <ScrollView
       style={{
         height: '100%',
         backgroundColor: 'white',
-        alignItems: 'center',
+        width: '100%',
         flex: 1,
       }}
+      contentContainerStyle={{
+        alignItems: 'center',
+        paddingHorizontal: 50,
+      }}
     >
-      <View style={styles.blueSection} />
-      <View style={styles.content}>
-        <View style={styles.option}>
-          <Text style={styles.optionsText}>Preguntas Frecuentes</Text>
-          <Icon
-            style={{ backgroundColor: 'white' }}
-            size={40}
-            name='chevron-right'
-            color='lightgrey'
-          />
-        </View>
-        <View style={styles.separator} />
-        <View style={styles.option}>
-          <Text style={styles.optionsText}>Contáctanos</Text>
-          <Icon
-            style={{ backgroundColor: 'white' }}
-            size={40}
-            name='chevron-right'
-            color='lightgrey'
-          />
-        </View>
-      </View>
-      <View styles={styles.whiteSection} />
-    </View>
+      <Text style={styles.mainText}>
+        Escríbenos un mensaje. Te responderemos por correo.
+      </Text>
+      <TextInput
+        style={styles.input}
+        multiline
+        numberOfLines={10}
+        textAlignVertical={'top'}
+      />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.popToTop()}
+      >
+        <Text style={styles.buttonText}>Enviar</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  blueSection: {
-    backgroundColor: '#1152fdee',
-    width: '100%',
-    height: '40%',
+  mainText: {
+    marginVertical: 30,
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'grey',
   },
-  content: {
-    top: '-10%',
-    height: '30%',
-    width: '90%',
-    paddingHorizontal: '5%',
-    elevation: 5,
-    backgroundColor: 'white',
+
+  input: {
+    width: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    padding: 10,
+    fontSize: 18,
+    color: 'grey',
+    backgroundColor: '#fafafa',
+    borderWidth: 1,
+    borderColor: 'grey',
     borderRadius: 20,
   },
-  option: {
-    height: '50%',
-    width: '100%',
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  button: {
+    width: 200,
+    marginTop: 40,
+    height: 50,
+    backgroundColor: 'blue',
+    borderRadius: 10,
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0000',
   },
-  optionsText: { fontSize: 24, color: 'grey', fontWeight: 'bold' },
-  separator: { height: 1, borderBottomWidth: 1, borderColor: 'lightgrey' },
-  whiteSection: {
-    backgroundColor: 'white',
-    height: '60%',
-    width: '100%',
+  buttonText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
   },
 });
 

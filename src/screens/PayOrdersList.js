@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import {
   Text,
   View,
@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Avatar, Divider } from 'react-native-paper';
+import { useFocusEffect } from '@react-navigation/native';
 import OrderContext from '../contexts/OrderContext';
 import UserContext from '../contexts/UserContext';
 
@@ -21,17 +22,18 @@ const PayOrdersList = ({ navigation }) => {
     getOrdersOfferedList,
   } = useContext(OrderContext);
 
-  useEffect(() => {
-    if (user.userType === 'agricultor') {
-      getOrdersList(user);
-    } else {
-      getOrdersOfferedList(user);
-    }
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      if (user.userType === 'agricultor') {
+        getOrdersList(user);
+      } else {
+        getOrdersOfferedList(user);
+      }
+    }, [])
+  );
 
   const renderItems = () => {
     return ordersList.map((item, index) => {
-      console.log(item);
       if (!item.expired) return;
       if (
         user.userType === 'transportador' &&
@@ -108,19 +110,6 @@ const PayOrdersList = ({ navigation }) => {
         </TouchableOpacity>
       );
     });
-  };
-
-  const handleFinish = async () => {
-    await postOrder(
-      { ...temporaryOrder, products: items, price, duration },
-      user
-    );
-    navigation.pop(2);
-    //navigation.push('PayOrdersList');
-  };
-
-  const handleAdd = () => {
-    setItems([...items, { product, weight }]);
   };
 
   return (
